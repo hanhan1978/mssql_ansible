@@ -1,0 +1,20 @@
+- name: install ntp
+  yum: name=ntp state=present
+
+- name: install libselinux-python
+  yum: name=libselinux-python state=present
+
+- name: copy ntp.conf 
+  template: src=ntp.conf.j2 dest=/etc/ntp.conf mode=0644
+
+- name: restart ntpd
+  service: name=ntpd state=restarted
+
+- name: chkconfig ntpd 
+  command: chkconfig ntpd on
+
+- name: copy localtime 
+  command: cp /usr/share/zoneinfo/Japan /etc/localtime
+
+- name: copy clock 
+  template: src=clock.j2 dest=/etc/sysconfig/clock mode=0644
